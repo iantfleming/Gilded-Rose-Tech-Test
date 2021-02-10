@@ -12,8 +12,8 @@ class GildedRose
       elsif item.quality < 50
         item.quality = item.quality + 1
         if item.name == 'Backstage passes to a TAFKAL80ETC concert'
-          item.quality = item.quality + 1 if item.sell_in < (11) && (item.quality < 50)
-          item.quality = item.quality + 1 if item.sell_in < (6) && (item.quality < 50)
+          item.quality = item.quality + 2 if item.sell_in < (11) && (item.quality < 50)
+          item.quality = item.quality + 3 if item.sell_in < (6) && (item.quality < 50)
         end
       end
       item.sell_in = item.sell_in - 1 if item.name != 'Sulfuras, Hand of Ragnaros'
@@ -45,3 +45,9 @@ class Item
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
+
+# g = GildedRose.new([Item.new('Aged Brie', 12, 20)])
+#
+# i = Item.new('Aged Brie', 12, 20)
+#
+# p g.update_quality
