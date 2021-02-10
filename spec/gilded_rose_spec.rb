@@ -32,6 +32,18 @@ describe GildedRose do
       expect(items[0].quality).to eq 0
     end
 
+    it 'the quality of Aged Brie will never exceed 50' do
+      items = [Item.new('Aged Brie', 12, 50)]
+      GildedRose.new(items).update_quality
+      expect(items[0].quality).to eq 50
+    end
+
+    it 'the quality of Backstage passes to a TAFKAL80ETC concert will never exceed 50' do
+      items = [Item.new('Backstage passes to a TAFKAL80ETC concert', 12, 50)]
+      GildedRose.new(items).update_quality
+      expect(items[0].quality).to eq 50
+    end
+
     it 'reduces the quality by 1 for multiple items' do
       items = [Item.new('foo', 12, 20)]
       items << Item.new('ham', 15, 25)
