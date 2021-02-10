@@ -44,13 +44,19 @@ describe GildedRose do
       expect(items[0].quality).to eq 23
     end
 
+    it 'reduces quality to 0 if backstage pass sell_in <= 0' do
+      items = [Item.new('Backstage passes to a TAFKAL80ETC concert', 0, 0)]
+      GildedRose.new(items).update_quality
+      expect(items[0].quality).to eq 0
+    end
+
     it 'increases item quality by 1 if the item is Aged Brie' do
       items = [Item.new('Aged Brie', 12, 20)]
       GildedRose.new(items).update_quality
       expect(items[0].quality).to eq 21
     end
 
-    it 'reduces item sell by date by 1 if the item is not brie or backstage passes' do
+    it 'reduces item sell by date by 1 if the item not brie or backstage passes' do
       items = [Item.new('foo', 12, 20)]
       GildedRose.new(items).update_quality
       expect(items[0].sell_in).to eq 11
