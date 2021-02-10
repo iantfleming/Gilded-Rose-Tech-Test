@@ -26,6 +26,12 @@ describe GildedRose do
       expect(items[0].sell_in).to eq 11
     end
 
+    it 'quality will never pass below 0' do
+      items = [Item.new('foo', 12, 0)]
+      GildedRose.new(items).update_quality
+      expect(items[0].quality).to eq 0
+    end
+
     it 'reduces the quality by 1 for multiple items' do
       items = [Item.new('foo', 12, 20)]
       items << Item.new('ham', 15, 25)
