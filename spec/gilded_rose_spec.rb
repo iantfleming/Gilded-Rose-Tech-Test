@@ -114,8 +114,6 @@ describe GildedRose do
       expect(items[0].sell_in).to eq 50
     end
 
-
-
     it 'does not change the name' do
       items = [Item.new('foo', 0, 0)]
       GildedRose.new(items).update_quality
