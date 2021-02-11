@@ -11,18 +11,22 @@ class GildedRose
         if item.name != 'Aged Brie' && item.name != 'Backstage passes'
           subtract_quality_by_1
           subtract_sell_in_by_1
-        elsif item.name == 'Backstage passes' && item.sell_in < 10 && item.sell_in > 5
-          increase_quality_by_2
         else
-          increase_quality_by_1
+          unless item.name == 'Backstage passes' && item.sell_in < 10 && item.sell_in > 5
+            increase_quality_by_1
+          else
+            increase_quality_by_2
+          end
         end
+      else
+        nil
       end
     end
   end
 
   def past_sell_by_date?
     @items.each do |item|
-      item.sell_in.zero?
+      item.sell_in == 0
     end
   end
 
@@ -82,3 +86,11 @@ class Item
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
+
+# require './lib/gilded_rose.rb'
+
+# g = GildedRose.new([Item.new('Aged Brie', 12, 20)])
+#
+# i = Item.new('Aged Brie', 12, 20)
+#
+# p g.update_quality
