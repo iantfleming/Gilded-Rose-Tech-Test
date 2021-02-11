@@ -39,7 +39,7 @@ class GildedRose
           subtract_quality_by_1
           subtract_sell_in_by_1
         else
-          unless item.name == 'Backstage passes' && item.sell_in < 10
+          unless item.name == 'Backstage passes' && item.sell_in < 10 && item.sell_in > 5
             increase_quality_by_1
           else
             increase_quality_by_2
@@ -102,6 +102,12 @@ class GildedRose
       item.quality += 2
     end
   end
+
+  def increase_quality_by_3
+    @items.each do |item|
+      item.quality += 3
+    end
+  end
 end
 
 class Item
@@ -117,6 +123,8 @@ class Item
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
+
+# require './lib/gilded_rose.rb'
 
 # g = GildedRose.new([Item.new('Aged Brie', 12, 20)])
 #
