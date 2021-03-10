@@ -41,8 +41,14 @@ describe GildedRose do
 
   it 'Sulfuras will not decrease in quality' do
     items = [Item.new('Sulfuras, Hand of Ragnaros', 8, 50)]
-    GildedRose.new(items).update_quality()
+    GildedRose.new(items).update_sulfuras()
     expect(items[0].quality).to eq 50
+  end
+
+  it 'Sulfuras sell_in will decrease by 1' do
+    items = [Item.new('Sulfuras, Hand of Ragnaros', 8, 50)]
+    GildedRose.new(items).update_sulfuras()
+    expect(items[0].sell_in).to eq 7
   end
 
   it 'Backstage passes increases quality by 2 when SellIn between 10 and 6' do

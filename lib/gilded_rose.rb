@@ -10,12 +10,14 @@ class GildedRose
     @items.each do |item|
       unless item.quality == 0
         if item.sell_in > 0
+          decrease_sell_in_by_1
           item.quality -= 1
         else
+          decrease_sell_in_by_1
           item.quality -= 2
         end
       else
-        item.quality += 0
+        decrease_sell_in_by_1
       end
     end
   end
@@ -26,9 +28,19 @@ class GildedRose
       when 'Aged Brie'
         unless item.quality == QUALITY_LIMIT
           item.quality += 1
+          decrease_sell_in_by_1
         else
-          nil
+          decrease_sell_in_by_1
         end
+      end
+    end
+  end
+
+  def update_sulfuras
+    @items.each do |item|
+      case item.name
+      when 'Sulfuras, Hand of Ragnaros'
+        decrease_sell_in_by_1
       end
     end
   end
@@ -39,6 +51,11 @@ class GildedRose
 
   private
 
+  def decrease_sell_in_by_1
+    @items.each do |item|
+      item.sell_in -= 1
+    end
+  end
 
 
 
