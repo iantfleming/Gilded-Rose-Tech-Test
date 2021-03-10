@@ -1,78 +1,95 @@
-
-
 class GildedRose
+
+  QUALITY_LIMIT = 50
+
   def initialize(items)
     @items = items
   end
 
-  def update_quality
+  def update_regular_items
     @items.each do |item|
-      if item.quality < 50 && item.quality.positive?
-        if item.name != 'Aged Brie' && item.name != 'Backstage passes'
-          subtract_quality_by_1
-          subtract_sell_in_by_1
+      unless item.quality == 0
+        if item.sell_in > 0
+          item.quality -= 1
         else
-          unless item.name == 'Backstage passes' && item.sell_in < 10 && item.sell_in > 5
-            increase_quality_by_1
-          else
-            increase_quality_by_2
-          end
+          item.quality -= 2
         end
       else
-        nil
+        item.quality += 0
       end
     end
   end
 
+  def update_aged_brie()
+    @items.each do |item|
+      case item.name
+      when 'Aged Brie'
+        unless item.quality == QUALITY_LIMIT
+          item.quality += 1
+        else
+          nil
+        end
+      end
+    end
+  end
+
+  def update_backstage_passes()
+
+  end
+
   private
 
-  def past_sell_by_date?
-    @items.each do |item|
-      item.sell_in == 0
-    end
-  end
 
-  def subtract_sell_in_by_1
-    @items.each do |item|
-      item.sell_in -= 1
-    end
-  end
 
-  def sell_in_greater_than_10?
-    @items.each do |item|
-      item.sell_in <= 10
-    end
-  end
 
-  def subtract_quality_by_1
-    @items.each do |item|
-      item.quality -= 1
-    end
-  end
 
-  def subtract_quality_by_2
-    @items.each do |item|
-      item.quality -= 2
-    end
-  end
-
-  def increase_quality_by_1
-    @items.each do |item|
-      item.quality += 1
-    end
-  end
-
-  def increase_quality_by_2
-    @items.each do |item|
-      item.quality += 2
-    end
-  end
-
-  def increase_quality_by_3
-    @items.each do |item|
-      item.quality += 3
-    end
-  end
+#   def update_quality()
+#     @items.each do |item|
+#       if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
+#         if item.quality > 0
+#           if item.name != "Sulfuras, Hand of Ragnaros"
+#             item.quality = item.quality - 1
+#           end
+#         end
+#       else
+#         if item.quality < 50
+#           item.quality = item.quality + 1
+#           if item.name == "Backstage passes to a TAFKAL80ETC concert"
+#             if item.sell_in < 11
+#               if item.quality < 50
+#                 item.quality = item.quality + 1
+#               end
+#             end
+#             if item.sell_in < 6
+#               if item.quality < 50
+#                 item.quality = item.quality + 1
+#               end
+#             end
+#           end
+#         end
+#       end
+#       if item.name != "Sulfuras, Hand of Ragnaros"
+#         item.sell_in = item.sell_in - 1
+#       end
+#       if item.sell_in < 0
+#         if item.name != "Aged Brie"
+#           if item.name != "Backstage passes to a TAFKAL80ETC concert"
+#             if item.quality > 0
+#               if item.name != "Sulfuras, Hand of Ragnaros"
+#                 item.quality = item.quality - 1
+#               end
+#             end
+#           else
+#             item.quality = item.quality - item.quality
+#           end
+#         else
+#           if item.quality < 50
+#             item.quality = item.quality + 1
+#           end
+#         end
+#       end
+#     end
+#   end
 end
 
 class Item
@@ -84,7 +101,7 @@ class Item
     @quality = quality
   end
 
-  def to_s
+  def to_s()
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
