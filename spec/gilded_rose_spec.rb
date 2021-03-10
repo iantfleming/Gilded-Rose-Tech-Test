@@ -51,9 +51,15 @@ describe GildedRose do
     expect(items[0].sell_in).to eq 7
   end
 
+  it 'Backstage passes increases quality by 1 when SellIn above 10' do
+    items = [Item.new('Backstage passes to a TAFKAL80ETC concert', 12, 26)]
+    GildedRose.new(items).update_backstage_passes()
+    expect(items[0].quality).to eq 27
+  end
+
   it 'Backstage passes increases quality by 2 when SellIn between 10 and 6' do
     items = [Item.new('Backstage passes to a TAFKAL80ETC concert', 8, 26)]
-    GildedRose.new(items).update_quality()
+    GildedRose.new(items).update_backstage_passes()
     expect(items[0].quality).to eq 28
   end
 

@@ -1,6 +1,7 @@
 class GildedRose
 
-  QUALITY_LIMIT = 50
+  QUALITY_UPPER_LIMIT = 50
+  QUALITY_LOWER_LIMIT = 0
 
   def initialize(items)
     @items = items
@@ -8,7 +9,7 @@ class GildedRose
 
   def update_regular_items
     @items.each do |item|
-      unless item.quality == 0
+      unless item.quality == QUALITY_LOWER_LIMIT
         if item.sell_in > 0
           decrease_sell_in_by_1
           item.quality -= 1
@@ -26,7 +27,7 @@ class GildedRose
     @items.each do |item|
       case item.name
       when 'Aged Brie'
-        unless item.quality == QUALITY_LIMIT
+        unless item.quality == QUALITY_UPPER_LIMIT
           item.quality += 1
           decrease_sell_in_by_1
         else
@@ -46,7 +47,16 @@ class GildedRose
   end
 
   def update_backstage_passes()
-
+    @items.each do |item|
+      case item.name
+      when 'Backstage passes to a TAFKAL80ETC concert' && item.sell_in > 10
+        item.quality += 1
+        decrease_sell_in_by_1
+      # when 'Backstage passes to a TAFKAL80ETC concert' && item.sell_in <= 10 && item.sell_in >= 6
+      #   item.quality += 2
+      #   decrease_sell_in_by_1
+      end
+    end
   end
 
   private
@@ -54,6 +64,12 @@ class GildedRose
   def decrease_sell_in_by_1
     @items.each do |item|
       item.sell_in -= 1
+    end
+
+    def quality_drop_to_0
+      @items.each do |item|
+        item.quality == 0
+      end
     end
   end
 
