@@ -24,6 +24,8 @@ class GildedRose
     end
   end
 
+  private
+
   def past_sell_by_date?
     @items.each do |item|
       item.sell_in == 0
@@ -86,11 +88,3 @@ class Item
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
-
-# require './lib/gilded_rose.rb'
-
-# g = GildedRose.new([Item.new('Aged Brie', 12, 20)])
-#
-# i = Item.new('Aged Brie', 12, 20)
-#
-# p g.update_quality
