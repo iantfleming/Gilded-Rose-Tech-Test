@@ -49,12 +49,19 @@ class GildedRose
   def update_backstage_passes()
     @items.each do |item|
       case item.name
-      when 'Backstage passes to a TAFKAL80ETC concert' && item.sell_in > 10
-        item.quality += 1
-        decrease_sell_in_by_1
-      # when 'Backstage passes to a TAFKAL80ETC concert' && item.sell_in <= 10 && item.sell_in >= 6
-      #   item.quality += 2
-      #   decrease_sell_in_by_1
+      when 'Backstage passes to a TAFKAL80ETC concert'
+        if item.sell_in > 10
+          item.quality += 1
+          decrease_sell_in_by_1
+        elsif item.sell_in <= 10 && item.sell_in > 5
+          item.quality += 2
+          decrease_sell_in_by_1
+        elsif item.sell_in <= 5 && item.sell_in > 0
+          item.quality += 3
+          decrease_sell_in_by_1
+        else
+          quality_drop_to_0
+        end
       end
     end
   end
@@ -68,7 +75,7 @@ class GildedRose
 
     def quality_drop_to_0
       @items.each do |item|
-        item.quality == 0
+        item.quality -= item.quality
       end
     end
   end
