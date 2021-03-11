@@ -1,76 +1,111 @@
-
-
 class GildedRose
+
+  QUALITY_UPPER_LIMIT = 50
+  QUALITY_LOWER_LIMIT = 0
+
   def initialize(items)
     @items = items
   end
 
   def update_quality
     @items.each do |item|
-      if item.quality < 50 && item.quality.positive?
-        if item.name != 'Aged Brie' && item.name != 'Backstage passes'
-          subtract_quality_by_1
-          subtract_sell_in_by_1
+      case item.name
+      when 'Aged Brie'
+        update_aged_brie
+      when 'Sulfuras, Hand of Ragnaros'
+        update_sulfuras
+      when 'Backstage passes to a TAFKAL80ETC concert'
+        update_backstage_passes
+      else
+        update_regular_items
+      end
+    end
+  end
+
+  def update_regular_items
+    @items.each do |item|
+      unless item.quality == QUALITY_LOWER_LIMIT
+        if item.sell_in > 0
+          decrease_sell_in_by_1
+          item.quality -= 1
         else
-          unless item.name == 'Backstage passes' && item.sell_in < 10 && item.sell_in > 5
-            increase_quality_by_1
-          else
-            increase_quality_by_2
-          end
+          decrease_sell_in_by_1
+          item.quality -= 2
         end
       else
+        decrease_sell_in_by_1
+      end
+    end
+  end
+
+  def update_aged_brie()
+    @items.each do |item|
+      case item.name
+      when 'Aged Brie'
+        unless item.quality == QUALITY_UPPER_LIMIT
+          item.quality += 1
+          decrease_sell_in_by_1
+        else
+          decrease_sell_in_by_1
+        end
+      end
+    end
+  end
+
+  def update_sulfuras
+    @items.each do |item|
+      case item.name
+      when 'Sulfuras, Hand of Ragnaros'
         nil
+      end
+    end
+  end
+
+  def update_backstage_passes()
+    @items.each do |item|
+      case item.name
+      when 'Backstage passes to a TAFKAL80ETC concert'
+        if item.sell_in > 10
+          item.quality += 1
+          decrease_sell_in_by_1
+          item_quality_limit
+        elsif item.sell_in <= 10 && item.sell_in > 5
+          item.quality += 2
+          decrease_sell_in_by_1
+          item_quality_limit
+        elsif item.sell_in <= 5 && item.sell_in > 0
+          item.quality += 3
+          decrease_sell_in_by_1
+          item_quality_limit
+        else
+          quality_drop_to_0
+          decrease_sell_in_by_1
+        end
       end
     end
   end
 
   private
 
-  def past_sell_by_date?
-    @items.each do |item|
-      item.sell_in == 0
-    end
-  end
-
-  def subtract_sell_in_by_1
+  def decrease_sell_in_by_1
     @items.each do |item|
       item.sell_in -= 1
     end
-  end
 
-  def sell_in_greater_than_10?
-    @items.each do |item|
-      item.sell_in <= 10
+    def quality_drop_to_0
+      @items.each do |item|
+        item.quality -= item.quality
+      end
     end
-  end
 
-  def subtract_quality_by_1
-    @items.each do |item|
-      item.quality -= 1
-    end
-  end
-
-  def subtract_quality_by_2
-    @items.each do |item|
-      item.quality -= 2
-    end
-  end
-
-  def increase_quality_by_1
-    @items.each do |item|
-      item.quality += 1
-    end
-  end
-
-  def increase_quality_by_2
-    @items.each do |item|
-      item.quality += 2
-    end
-  end
-
-  def increase_quality_by_3
-    @items.each do |item|
-      item.quality += 3
+    def item_quality_limit
+      @items.each do |item|
+        if item.quality > QUALITY_UPPER_LIMIT
+          item.quality -= item.quality - QUALITY_UPPER_LIMIT
+        else
+          item.quality
+        end
+      end
     end
   end
 end
@@ -84,7 +119,7 @@ class Item
     @quality = quality
   end
 
-  def to_s
+  def to_s()
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 end
