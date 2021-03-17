@@ -7,7 +7,7 @@ class GildedRose
     @items = items
   end
 
-  def update_quality
+  def update_quality()
     @items.each do |item|
       case item.name
       when 'Aged Brie'
@@ -16,13 +16,17 @@ class GildedRose
         update_sulfuras
       when 'Backstage passes to a TAFKAL80ETC concert'
         update_backstage_passes
+      when 'Conjured'
+        update_conjured
       else
         update_regular_items
       end
     end
   end
 
-  def update_regular_items
+  private
+
+  def update_regular_items()
     @items.each do |item|
       unless item.quality == QUALITY_LOWER_LIMIT
         if item.sell_in > 0
@@ -52,7 +56,7 @@ class GildedRose
     end
   end
 
-  def update_sulfuras
+  def update_sulfuras()
     @items.each do |item|
       case item.name
       when 'Sulfuras, Hand of Ragnaros'
@@ -85,20 +89,28 @@ class GildedRose
     end
   end
 
-  private
+  def update_conjured()
+    @items.each do |item|
+      case item.name
+      when 'Conjured'
+        item.quality -= 2
+        decrease_sell_in_by_1
+      end
+    end
+  end
 
-  def decrease_sell_in_by_1
+  def decrease_sell_in_by_1()
     @items.each do |item|
       item.sell_in -= 1
     end
 
-    def quality_drop_to_0
+    def quality_drop_to_0()
       @items.each do |item|
         item.quality -= item.quality
       end
     end
 
-    def item_quality_limit
+    def item_quality_limit()
       @items.each do |item|
         if item.quality > QUALITY_UPPER_LIMIT
           item.quality -= item.quality - QUALITY_UPPER_LIMIT
