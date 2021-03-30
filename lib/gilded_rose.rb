@@ -103,20 +103,20 @@ class GildedRose
     @items.each do |item|
       item.sell_in -= 1
     end
+  end
 
-    def quality_drop_to_0()
-      @items.each do |item|
-        item.quality -= item.quality
-      end
+  def quality_drop_to_0()
+    @items.each do |item|
+      item.quality -= item.quality
     end
+  end
 
-    def item_quality_limit()
-      @items.each do |item|
-        if item.quality > QUALITY_UPPER_LIMIT
-          item.quality -= item.quality - QUALITY_UPPER_LIMIT
-        else
-          item.quality
-        end
+  def item_quality_limit()
+    @items.each do |item|
+      if item.quality > QUALITY_UPPER_LIMIT
+        item.quality -= item.quality - QUALITY_UPPER_LIMIT
+      else
+        item.quality
       end
     end
   end
